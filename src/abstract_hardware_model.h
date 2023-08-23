@@ -986,6 +986,8 @@ class inst_t {
   bool is_idiv() const { return ((sp_op == INT_DIV_OP));}   
   bool is_sfu() const {return ((sp_op == FP_SQRT_OP) || (sp_op == FP_LG_OP)  || (sp_op == FP_SIN_OP)  || (sp_op == FP_EXP_OP) || (sp_op == TENSOR__OP));}
   bool is_alu() const {return (sp_op == INT__OP);}
+  // TODO crear funcion que nos diga si la instruccion trabaja con punto flotante
+  bool is_fp_all() const {return ((this->is_fp() || this->is_fpdiv() || this->is_fpmul() || this->is_dpdiv() || this->is_dpmul() || this->is_dp() || this->is_sfu()));}
 
   unsigned get_num_operands() const { return num_operands; }
   unsigned get_num_regs() const { return num_regs; }

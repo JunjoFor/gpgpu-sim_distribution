@@ -1816,6 +1816,15 @@ void shader_core_ctx::warp_inst_complete(const warp_inst_t &inst) {
 
   m_stats->m_num_sim_winsn[m_sid]++;
   m_gpu->gpu_sim_insn += inst.active_count();
+  // TEST
+  if(inst.is_fp_all())
+    m_gpu->gpu_sim_insn_fp += inst.active_count();
+  if((inst.space.is_global()) && (inst.is_load() || inst.is_store()))
+  {
+    m_gpu->bytesMemReaded += inst.data_size*inst.active_count();
+  }
+   
+  // END TEST
   inst.completed(m_gpu->gpu_tot_sim_cycle + m_gpu->gpu_sim_cycle);
 }
 
@@ -4430,12 +4439,15 @@ void simt_core_cluster::icnt_inject_request_packet(class mem_fetch *mf) {
       m_stats->gpgpu_n_mem_texture++;
       break;
     case GLOBAL_ACC_R:
+      // TEST
+      m_gpu->bytesMemReaded2 += mf->get_data_size();
       m_stats->gpgpu_n_mem_read_global++;
       break;
     // case GLOBAL_ACC_R: m_stats->gpgpu_n_mem_read_global++;
     // printf("read_global%d\n",m_stats->gpgpu_n_mem_read_global); break;
     case GLOBAL_ACC_W:
       m_stats->gpgpu_n_mem_write_global++;
+      m_gpu->bytesMemReaded2 += mf->get_data_size();
       break;
     case LOCAL_ACC_R:
       m_stats->gpgpu_n_mem_read_local++;

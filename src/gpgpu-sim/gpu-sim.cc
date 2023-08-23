@@ -938,6 +938,11 @@ gpgpu_sim::gpgpu_sim(const gpgpu_sim_config &config, gpgpu_context *ctx)
                        m_shader_stats, m_memory_config, m_memory_stats);
 
   gpu_sim_insn = 0;
+  // TEST
+  gpu_sim_insn_fp = 0;
+  bytesMemReaded = 0;
+  bytesMemReaded2 = 0;
+  // END TEST
   gpu_tot_sim_insn = 0;
   gpu_tot_issued_cta = 0;
   gpu_completed_cta = 0;
@@ -1355,6 +1360,13 @@ void gpgpu_sim::gpu_print_stat() {
 
   printf("gpu_sim_cycle = %lld\n", gpu_sim_cycle);
   printf("gpu_sim_insn = %lld\n", gpu_sim_insn);
+  // TEST
+  printf("gpu_sim_insn_fp = %lld\n", gpu_sim_insn_fp);
+  printf("gpu_bytes_leidos = %lld\n", bytesMemReaded);
+  printf("gpu_bytes_leidos_Desde_MemFetch = %lld\n", bytesMemReaded2);
+  printf("gpu_arithmetic_intensity = %2.14f\n", (double)gpu_sim_insn_fp/bytesMemReaded);
+  printf("gpu_gflops = %f\n", (m_config.core_freq * gpu_sim_insn_fp/gpu_sim_cycle)/1000000000);
+  // END TEST
   printf("gpu_ipc = %12.4f\n", (float)gpu_sim_insn / gpu_sim_cycle);
   printf("gpu_tot_sim_cycle = %lld\n", gpu_tot_sim_cycle + gpu_sim_cycle);
   printf("gpu_tot_sim_insn = %lld\n", gpu_tot_sim_insn + gpu_sim_insn);
